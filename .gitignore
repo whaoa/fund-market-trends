@@ -1,0 +1,38 @@
+# See https://help.github.com/ignore-files/ for more about ignoring files.
+
+# misc
+.DS_Store
+*.local
+
+# editors
+.idea/
+.vscode/
+!.vscode/extensions.json
+
+# dependencies
+node_modules/
+package-lock.json
+yarn.lock
+
+# builds
+build/
+dist/
+.output
+
+# caches
+.cache/
+.temp/
+.swc/
+.tanstack
+*.tsbuildinfo
+
+# logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# generated
+src/routeTree.gen.ts
