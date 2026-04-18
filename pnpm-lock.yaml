@@ -23,6 +23,9 @@ importers:
       react-dom:
         specifier: ^19.2.0
         version: 19.2.5(react@19.2.5)
+      tinyfloat:
+        specifier: ^1.0.2
+        version: 1.0.2
     devDependencies:
       '@antfu/eslint-config':
         specifier: ^8.2.0
@@ -2194,6 +2197,9 @@ packages:
   tinyexec@1.1.1:
     resolution: {integrity: sha512-VKS/ZaQhhkKFMANmAOhhXVoIfBXblQxGX1myCQ2faQrfmobMftXeJPcZGp0gS07ocvGJWDLZGyOZDadDBqYIJg==}
     engines: {node: '>=18'}
+
+  tinyfloat@1.0.2:
+    resolution: {integrity: sha512-dL72eez8JZ9jIrS/tqPNe6SUMCMOru6wBc7uLLguqBnAHoiBRJzOWS1h4xSwa+UgRWXys9tPJnrrnCJ81zPyUQ==}
 
   tinyglobby@0.2.16:
     resolution: {integrity: sha512-pn99VhoACYR8nFHhxqix+uvsbXineAasWm5ojXoN8xEwK5Kd3/TrhNn1wByuD52UxWRLy8pu+kRMniEi6Eq9Zg==}
@@ -4754,6 +4760,8 @@ snapshots:
       any-promise: 1.3.0
 
   tinyexec@1.1.1: {}
+
+  tinyfloat@1.0.2: {}
 
   tinyglobby@0.2.16:
     dependencies:
