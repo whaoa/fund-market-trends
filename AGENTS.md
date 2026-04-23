@@ -31,11 +31,19 @@ Use Node `22` (see `.nvmrc`) and `pnpm`.
 - Indentation: 2 spaces; quotes: single; semicolons required (see `eslint.config.mjs`)
 - Imports are auto-sorted; keep groups clean (React, TanStack Router, externals, internals like `#/...`)
 - Route files follow TanStack Router conventions (`src/routes/__root.tsx`, `src/routes/index.tsx`)
-- Props rules (enforced by convention in this repo)
-  - Declare props types as standalone `interface` (e.g. `interface ButtonProps { ... }`)
-  - Pass `props` as a single param: `function Button(props: ButtonProps)`
-  - Destructure inside the function body: `const { tone, className } = props`
+- Component props rules
+  - Declare props types as standalone `interface` (e.g. `interface ButtonProps { ... }`); export only when used externally
+  - Use `function Button(props: ButtonProps)`; destructure inside the function body (top of function)
+  - Access props via destructured variables (handle defaults during destructure)
+  - When props include `className`, `style`, `children`, keep them at the front in this order during destructure
+  - Prefer `src/types/react.ts` mixins on the props interface (`PropsWithClassName`, `PropsWithStyle`, `PropsWithChildren`)
+  - Component body order: props-related handling → internal state handling → effects → `return` JSX (separate blocks with blank lines)
+- Formatting
+  - Prefer single-line forms when the line stays within 100 characters; use multi-line formatting when it exceeds 100 characters
 - Tailwind first: prefer utility classnames and keep `className` strings short
+- Tailwind class order (rough guideline)
+  - Keep utilities grouped in this order: layout/position → display → flex/grid → spacing → sizing → typography → colors/background → border → effects → transition/animation → state variants (`hover:`, `focus:`...) → `dark:` variants
+  - Keep CSS property order aligned with `stylelint-config-hudochenkov` ordering (`order.js`) when writing CSS and when grouping Tailwind utilities
 - Reused colors live in `tailwind.config.ts` theme tokens
 
 ## Testing Guidelines

@@ -6,4 +6,6 @@ export function float(...args: ConstructorParameters<typeof TinyFloat>) {
 
 export { clsx as cn } from 'clsx';
 
+export { format as formatDate } from 'date-fns/format';
+
 export { ofetch as request } from 'ofetch';

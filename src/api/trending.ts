@@ -1,7 +1,7 @@
 import { batchQueryByCodesWithTencent } from '#/libs/tencent';
 import { float, request } from '#/libs/util';
 
-interface TrendingItem {
+export interface TrendingItem {
   /** 代码 */
   code: string;
   /** 名称 */
@@ -11,10 +11,8 @@ interface TrendingItem {
   /** 涨跌净值 */
   change: number;
   /** 涨跌幅度 */
-  changePercent: number;
+  changePercent: string;
 }
-
-export type { TrendingItem };
 
 /**
  * 通过 腾讯证券 API 获取行情信息
@@ -28,7 +26,7 @@ async function getTrending(codes: string[]): Promise<TrendingItem[]> {
     name: values[1] || '',
     nav: Number(values[3]),
     change: Number(values[4]),
-    changePercent: Number(values[5]),
+    changePercent: values[5] || '0.00',
   }));
 }
 
@@ -66,13 +64,12 @@ async function getStockTrending(codes: string[]): Promise<TrendingItem[]> {
     .filter((item) => codes.includes(item.qtcode))
     .map((item) => {
       const nav = Number(item.zxj);
-      const percent = Number(item.zdf);
       return {
         code: item.code,
         name: item.name.length > 5 ? item.name.replace('指数', '') : item.name,
         nav,
-        change: float(nav).sub(float(nav).div(float(percent).div(100).add(1))).toNumber(2),
-        changePercent: percent,
+        change: float(nav).sub(float(nav).div(float(item.zdf).div(100).add(1))).toNumber(2),
+        changePercent: item.zdf,
       };
     });
 }

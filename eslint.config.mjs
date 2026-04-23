@@ -23,6 +23,7 @@ export default antfu(
     files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
     rules: {
       'style/arrow-parens': ['error', 'always'],
+      'style/multiline-ternary': ['error', 'always-multiline', { ignoreJSX: true }],
       'perfectionist/sort-imports': [
         'error',
         {
@@ -56,7 +57,7 @@ export default antfu(
       ],
       'react-refresh/only-export-components': [
         'error',
-        { extraHOCs: ['createFileRoute'] },
+        { extraHOCs: ['createFileRoute', 'createRootRoute'] },
       ],
     },
   },
