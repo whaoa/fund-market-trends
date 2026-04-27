@@ -1,14 +1,14 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, Link } from '@tanstack/react-router';
 
 import { useQuery } from '@tanstack/react-query';
 
 import { getCurrentTrending } from '#/api/trending';
-import { RefreshIcon } from '#/components/icons/Refresh';
 import { CardContent, CardHeader, CardRoot } from '#/components/ui/Card';
 import { FundChangeBadge, FundChangeText } from '#/components/ui/FundChangeText';
+import { UpdatedTimeBar } from '#/components/ui/UpdatedTimeBar';
 import { AUTO_REFRESH_INTERVAL } from '#/libs/constant';
 import { formatFundChange } from '#/libs/fund';
-import { cn, float, formatDate } from '#/libs/util';
+import { cn, float } from '#/libs/util';
 
 import type { TrendingItem } from '#/api/trending';
 import type { PropsWithChildren, PropsWithClassName } from '#/types/react';
@@ -26,39 +26,13 @@ function DashboardRoute() {
 
   return (
     <>
-      <ActionBar fetching={query.isFetching} time={query.dataUpdatedAt} refresh={query.refetch} />
+      <UpdatedTimeBar
+        fetching={query.isFetching}
+        time={query.dataUpdatedAt}
+        refresh={query.refetch}
+      />
       <FundGridView className="mt-3" loading={query.isLoading} trending={query.data} />
     </>
-  );
-}
-
-interface ActionBarProps {
-  fetching: boolean;
-  time: number;
-  refresh: () => Promise<unknown>;
-}
-
-function ActionBar(props: ActionBarProps) {
-  const { fetching, time, refresh } = props;
-
-  return (
-    <div className="flex items-center px-1 py-1 text-sm">
-      <p className="flex-1 py-1 text-t-secondary">
-        <span className="max-md:hidden">Updated at: </span>
-        {time ? formatDate(time, `MMM dd, yyyy 'at' HH:mm:ss z`) : '--'}
-      </p>
-      <button
-        className={(
-          'inline-flex items-center border-b border-b-transparent disabled:text-t-secondary'
-          + ' hover:border-b-t-primary active:text-t-secondary active:border-b-t-secondary'
-        )}
-        disabled={fetching}
-        onClick={() => refresh()}
-      >
-        <RefreshIcon className="mr-1 w-3.5 h-3.w-3.5" />
-        <span>Refresh</span>
-      </button>
-    </div>
   );
 }
 
@@ -72,27 +46,49 @@ function FundGridView(props: FundGridViewProps) {
 
   return (
     <div className={cn('grid grid-cols-1 gap-3 md:grid-cols-2', className)}>
-      <FundGroupCard className="min-h-[746px] md:row-span-2" title="China" loading={loading} funds={trending?.China}>
-        Mainland + Hong Kong indices
+      <FundGroupCard
+        className="min-h-[746px] md:row-span-2"
+        title="China"
+        description="Mainland + Hong Kong indices"
+        funds={trending?.China}
+        loading={loading}
+      />
+
+      <FundGroupCard
+        title="United States"
+        description="S&P 500, Nasdaq and Dow"
+        funds={trending?.UnitedStates}
+        loading={loading}
+      >
+        <div className="mt-3 p-2 text-center">
+          <Link
+            className="text-sm text-t-secondary underline hover:text-t-primary"
+            to="/funds/us"
+          >
+            Funds
+          </Link>
+        </div>
       </FundGroupCard>
-      <FundGroupCard title="United States" loading={loading} funds={trending?.UnitedStates}>
-        S&P 500, Nasdaq and Dow
-      </FundGroupCard>
-      <FundGroupCard title="Japan" loading={loading} funds={trending?.Japan}>
-        Nikkei 225
-      </FundGroupCard>
+
+      <FundGroupCard
+        title="Japan"
+        description="Nikkei 225"
+        funds={trending?.Japan}
+        loading={loading}
+      />
     </div>
   );
 }
 
 interface FundGroupCardProps extends PropsWithClassName, PropsWithChildren {
   title: string;
-  loading?: boolean;
+  description?: string;
   funds?: TrendingItem[];
+  loading?: boolean;
 }
 
 function FundGroupCard(props: FundGroupCardProps) {
-  const { className, children, title, loading, funds } = props;
+  const { className, children, title, description, loading, funds } = props;
 
   const avg = funds
     ? funds.reduce((v, i) => v.add(i.changePercent), float(0)).div(funds.length).toNumber()
@@ -103,7 +99,7 @@ function FundGroupCard(props: FundGroupCardProps) {
       <CardHeader className="flex items-center">
         <div className="flex-1">
           <h3 className="font-bold">{title}</h3>
-          <p className="mt-1 text-sm teth-secondary">{children}</p>
+          <p className="mt-1 text-sm teth-secondary">{description}</p>
         </div>
         <FundChangeBadge className={loading ? 'hidden' : ''} change={avg}>
           {`Avg: ${formatFundChange(avg, true)}%`}
@@ -116,6 +112,7 @@ function FundGroupCard(props: FundGroupCardProps) {
             {loading ? 'Loading...' : 'No data'}
           </div>
         )}
+        {children}
       </CardContent>
     </CardRoot>
   );

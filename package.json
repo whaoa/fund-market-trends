@@ -17,6 +17,7 @@
     "format": "eslint . --fix"
   },
   "dependencies": {
+    "@date-fns/tz": "^1.4.1",
     "@tanstack/react-query": "^5.99.0",
     "@tanstack/react-router": "^1.168.22",
     "clsx": "^2.1.1",
