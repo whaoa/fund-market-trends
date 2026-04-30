@@ -2,7 +2,7 @@ import { createFileRoute } from '@tanstack/react-router';
 
 import { useQuery } from '@tanstack/react-query';
 
-import { batchCalculateFundChangePercentByHolding, getUnitedStatesFundList } from '#/api/fund';
+import { batchCalculateFundChangePercent, getUnitedStatesFundList } from '#/api/fund';
 import { CardContent, CardHeader, CardRoot } from '#/components/ui/Card';
 import { FundChangeBadge, FundChangeText } from '#/components/ui/FundChangeText';
 import { UpdatedTimeBar } from '#/components/ui/UpdatedTimeBar';
@@ -24,7 +24,7 @@ function RouteComponent() {
 
   const changes = useQuery({
     queryKey: ['funds-changes', 'us'],
-    queryFn: () => batchCalculateFundChangePercentByHolding(
+    queryFn: () => batchCalculateFundChangePercent(
       funds?.data?.map((f) => f.holding) || [],
     ),
     enabled: !!funds?.data?.length,
@@ -51,7 +51,7 @@ function RouteComponent() {
 interface UnitedStatesFundsCardProps extends PropsWithClassName {
   loading: boolean;
   funds?: Awaited<ReturnType<typeof getUnitedStatesFundList>>;
-  changes?: Awaited<ReturnType<typeof batchCalculateFundChangePercentByHolding>>;
+  changes?: Awaited<ReturnType<typeof batchCalculateFundChangePercent>>;
 }
 
 function UnitedStatesFundsCard(props: UnitedStatesFundsCardProps) {
@@ -92,7 +92,7 @@ function UnitedStatesFundsCard(props: UnitedStatesFundsCardProps) {
 
 interface FundsTableViewProps {
   funds: Awaited<ReturnType<typeof getUnitedStatesFundList>>;
-  changes?: Awaited<ReturnType<typeof batchCalculateFundChangePercentByHolding>>;
+  changes?: Awaited<ReturnType<typeof batchCalculateFundChangePercent>>;
 }
 
 function FundsTableView(props: FundsTableViewProps) {
@@ -111,6 +111,13 @@ function FundsTableView(props: FundsTableViewProps) {
           <div
             key={fund.code}
             className={cn('flex flex-wrap py-3', index > 0 && 'border-t border-t-g-border')}
+            onClick={() => {
+              /* eslint-disable no-console */
+              console.group(`[${fund.code}] ${fund.name}`);
+              console.table(fund.holding);
+              console.groupEnd();
+              /* eslint-enable no-console */
+            }}
           >
             <span className="w-full md:w-3/5">
               <span className="font-bold text-sm">{fund.name}</span>

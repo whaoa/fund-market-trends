@@ -2,6 +2,7 @@ import { batchQueryByCodesWithTencent } from '#/libs/tencent';
 import { float, parseDate, request, tz } from '#/libs/util';
 
 import { getCurrencyChangePercentMap } from './base';
+import { getLegacyFundHolding } from './holdings';
 
 /**
  * 获取美股主动基金列表
@@ -85,14 +86,10 @@ async function getFundHoldingInformation(code: string) {
     stocks: resp.data.stock.map((item) => ({
       /** 内部股票代码 */
       id: item.jump_code || null,
-      /** 股票代码 */
-      code: item.code || '',
       /** 股票名称 */
       name: item.name,
       /** 持仓比例 */
       ratio: item.ratio,
-      /** 股票当前涨幅 */
-      changePercent: item.rate || '',
     })),
   };
 }
@@ -127,7 +124,10 @@ export async function getUnitedStatesFundList() {
     /** 基金名称 */
     name: fund.name.replace(/\(QDII(-LOF)?\)(人民币)?([CA])?/i, ' $3'),
     /** 基金持仓 */
-    holding: holdings[index]!.stocks,
+    holding: [
+      ...holdings[index]!.stocks,
+      ...getLegacyFundHolding(fund.code, holdings[index]!.stocks).stocks,
+    ],
   }));
 }
 
@@ -135,8 +135,8 @@ export async function getUnitedStatesFundList() {
  * 根据持仓信息批量计算基金涨幅
  * @param holdings
  */
-export async function batchCalculateFundChangePercentByHolding(
-  holdings: Awaited<ReturnType<typeof getFundHoldingInformation>>['stocks'][],
+export async function batchCalculateFundChangePercent(
+  holdings: Awaited<ReturnType<typeof getUnitedStatesFundList>>[number]['holding'][],
 ) {
   // 用于保存 code - id 的映射对象
   const codes: Record<string, string> = {};
