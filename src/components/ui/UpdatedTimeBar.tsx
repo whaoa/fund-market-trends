@@ -13,8 +13,8 @@ export function UpdatedTimeBar(props: ActionBarProps) {
   return (
     <div className="flex items-center px-1 py-1 text-sm">
       <p className="flex-1 py-1 text-t-secondary tabular-nums">
-        <span className="max-md:hidden">Updated at: </span>
-        {time ? formatDate(time, `MMM dd, yyyy 'at' HH:mm:ss z`) : '--'}
+        <span className="max-md:hidden">更新时间：</span>
+        {time ? formatDate(time, `yyyy-MM-dd HH:mm:ss (z)`) : '--'}
       </p>
       <button
         className={(
@@ -25,7 +25,7 @@ export function UpdatedTimeBar(props: ActionBarProps) {
         onClick={() => refresh()}
       >
         <RefreshIcon className="mr-1 h-3.5 w-3.5" />
-        <span>Refresh</span>
+        <span>刷新</span>
       </button>
     </div>
   );

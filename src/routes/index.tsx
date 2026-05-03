@@ -48,15 +48,15 @@ function FundGridView(props: FundGridViewProps) {
     <div className={cn('grid grid-cols-1 gap-3 md:grid-cols-2', className)}>
       <FundGroupCard
         className="min-h-[746px] md:row-span-2"
-        title="China"
-        description="Mainland + Hong Kong indices"
+        title="中国"
+        description="大陆 + 香港指数"
         funds={trending?.China}
         loading={loading}
       />
 
       <FundGroupCard
-        title="United States"
-        description="S&P 500, Nasdaq and Dow"
+        title="美国"
+        description="标普 500, 纳斯达克以及道琼斯"
         funds={trending?.UnitedStates}
         loading={loading}
       >
@@ -65,14 +65,14 @@ function FundGridView(props: FundGridViewProps) {
             className="text-sm text-t-secondary underline hover:text-t-primary"
             to="/funds/us"
           >
-            Funds
+            热门基金
           </Link>
         </div>
       </FundGroupCard>
 
       <FundGroupCard
-        title="Japan"
-        description="Nikkei 225"
+        title="日本"
+        description="日经指数"
         funds={trending?.Japan}
         loading={loading}
       />
@@ -102,14 +102,14 @@ function FundGroupCard(props: FundGroupCardProps) {
           <p className="mt-1 text-sm teth-secondary">{description}</p>
         </div>
         <FundChangeBadge className={loading ? 'hidden' : ''} change={avg}>
-          {`Avg: ${formatFundChange(avg, true)}%`}
+          {`均值：${formatFundChange(avg, true)}%`}
         </FundChangeBadge>
       </CardHeader>
 
       <CardContent>
         {funds?.length ? <FundTableView funds={funds || []} /> : (
           <div className="py-6 text-center text-sm text-t-secondary">
-            {loading ? 'Loading...' : 'No data'}
+            {loading ? '加载中…' : '暂无数据'}
           </div>
         )}
         {children}
@@ -124,8 +124,8 @@ function FundTableView(props: { funds: TrendingItem[] }) {
   return (
     <>
       <div className="flex text-xs text-t-secondary">
-        <span className="w-3/5">Index</span>
-        <span className="w-2/5 text-right">Change</span>
+        <span className="w-3/5">指数</span>
+        <span className="w-2/5 text-right">涨跌幅</span>
       </div>
       {funds.map((fund, index) => (
         <div key={fund.code} className={cn('flex flex-wrap py-3', index > 0 && 'border-t border-t-g-border')}>
@@ -136,7 +136,7 @@ function FundTableView(props: { funds: TrendingItem[] }) {
           <FundChangeText className="w-2/5 text-right font-bold text-sm" change={fund.change}>
             {`${formatFundChange(Number(fund.changePercent), true)}%`}
           </FundChangeText>
-          <span className="mt-1 w-1/2 text-xs text-t-secondary">{`Value: ${fund.nav}`}</span>
+          <span className="mt-1 w-1/2 text-xs text-t-secondary">{`净值：${fund.nav}`}</span>
           <FundChangeText className="mt-1 w-1/2 text-right text-xs" change={fund.change}>
             {formatFundChange(fund.change)}
           </FundChangeText>

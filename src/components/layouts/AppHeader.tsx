@@ -15,8 +15,8 @@ export function AppHeader() {
         </Link>
       </h1>
       <p className="mt-3 text-t-secondary">
-        A calm view of today's market moves.
-        See what's rising, what's cooling, and where attention is shifting, so you can spot trends fast and decide with confidence.
+        用更平静的视角看今天的市场波动。
+        追踪上涨与回落，观察关注点的迁移，快速识别趋势，并更自信地做决策。
       </p>
     </Container>
   );

@@ -67,20 +67,20 @@ function UnitedStatesFundsCard(props: UnitedStatesFundsCardProps) {
     <CardRoot className={className}>
       <CardHeader className="flex items-center">
         <div className="flex-1">
-          <h2 className="font-bold text-base">United States Funds</h2>
+          <h2 className="font-bold text-base">美国基金</h2>
           <p className="mt-1 text-sm text-t-secondary">
-            Real-time change is estimated from major holdings, with FX impact included.
+            根据基金公司公布的最新季度报告以及上一年的年度报告中提供的持仓信息并结合货币汇率估算实时涨跌幅度。
           </p>
         </div>
         <FundChangeBadge className={loading ? 'hidden' : ''} change={avg}>
-          {`Avg: ${formatFundChange(avg, true)}%`}
+          {`均值：${formatFundChange(avg, true)}%`}
         </FundChangeBadge>
       </CardHeader>
 
       <CardContent>
         {(loading || !funds?.length) ? (
           <div className="py-6 text-center text-sm text-t-secondary">
-            {loading ? 'Loading...' : 'No data'}
+            {loading ? '加载中…' : '暂无数据'}
           </div>
         ) : (
           <FundsTableView funds={funds} changes={changes} />
@@ -101,9 +101,9 @@ function FundsTableView(props: FundsTableViewProps) {
   return (
     <>
       <div className="hidden md:flex text-xs mb-2 text-t-secondary">
-        <span className="w-3/5">Fund</span>
-        <span className="w-1/5 text-right">Estimated change</span>
-        <span className="w-1/5 text-right">Updated At</span>
+        <span className="w-3/5">基金</span>
+        <span className="w-1/5 text-right">预估涨跌幅</span>
+        <span className="w-1/5 text-right">更新时间</span>
       </div>
       {funds.map((fund, index) => {
         const change = changes?.[index];
@@ -124,7 +124,7 @@ function FundsTableView(props: FundsTableViewProps) {
               <span className="ml-2 text-xs text-t-secondary">{fund.code}</span>
             </span>
             <div className="mt-2 w-1/2 md:mt-0 md:w-1/5 md:text-right">
-              <p className="text-xs text-t-secondary md:hidden">Estimated change</p>
+              <p className="text-xs text-t-secondary md:hidden">预估涨跌幅</p>
               <FundChangeText
                 className="font-bold text-sm"
                 change={change?.change || 0}
@@ -133,7 +133,7 @@ function FundsTableView(props: FundsTableViewProps) {
               </FundChangeText>
             </div>
             <div className="mt-2 w-1/2 text-right md:mt-0 md:w-1/5">
-              <p className="text-xs text-t-secondary md:hidden">Updated At</p>
+              <p className="text-xs text-t-secondary md:hidden">更新时间</p>
               <span className="text-xs text-t-secondary tabular-nums md:text-sm">
                 {change?.time ? formatDate(change.time, 'MM-dd HH:mm:ss') : '--'}
               </span>
